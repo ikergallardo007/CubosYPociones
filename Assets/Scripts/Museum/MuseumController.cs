@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class MuseumController : MonoBehaviour
 {
     // Public Attributes
-    public GameObject cubePrefab;
+    public CubeObject cubePrefab;
 
     // Private Properties
     private InputAction collectAction;
@@ -19,6 +19,7 @@ public class MuseumController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        // Space button pressed.
         bool collectPress = collectAction.WasPressedThisFrame();
         if (collectPress)
         {
@@ -28,6 +29,7 @@ public class MuseumController : MonoBehaviour
 
     void CollectCube(Vector3 position)
     {
+        // Instantiation of cube prefab.
         Instantiate(cubePrefab, position, Quaternion.identity);
     }
 }
