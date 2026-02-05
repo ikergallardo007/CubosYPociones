@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,7 @@ public class MuseumController : MonoBehaviour
     {
         // Get the collect action from the Input System
         collectAction = InputSystem.actions.FindAction("Collect");
+        StartCoroutine(CollectCube());
     }
 
     // Update is called once per frame
@@ -24,12 +26,23 @@ public class MuseumController : MonoBehaviour
         if (collectPress)
         {
             print("Collect Button Pressed");
+
         }
     }
 
-    void CollectCube(Vector3 position)
+    IEnumerator CollectCube()
     {
-        // Instantiation of cube prefab.
-        Instantiate(cubePrefab, position, Quaternion.identity);
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 15; j++)
+            {
+                while (!collectAction.WasPressedThisFrame())
+                {
+                    yield return null; // Wait until the collect button is pressed
+                }
+                Vector3 position = new Vector3(i * 2, 0, j * 2); // Example position for the cube
+                Instantiate(cubePrefab, position, Quaternion.identity);
+            }
+        }
     }
 }
