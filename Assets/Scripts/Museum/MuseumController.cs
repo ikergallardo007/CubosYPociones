@@ -5,12 +5,25 @@ using UnityEngine.InputSystem;
 public class MuseumController : MonoBehaviour
 {
     // Public Attributes
-    public CubeObject cubePrefab;
+    public CubeObject cubePrefab; // Reference to the cube prefab to be instantiated
 
     // Private Properties
-    private InputAction collectAction;
-    private int i = 0;
-    private int j = 0;
+    private InputAction collectAction; // Input action for collecting cubes
+    private int i = 0; // Counter for the x-axis position of the cube
+    private int j = 0; // Counter for the z-axis position of the cube
+    private Color[] cubeColors = new Color[] {
+                Color.black,
+                Color.blue,
+                Color.brown,
+                Color.gray,
+                Color.green,
+                Color.orange,
+                Color.pink,
+                Color.purple,
+                Color.red,
+                Color.white,
+                Color.yellow
+    };
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -44,6 +57,7 @@ public class MuseumController : MonoBehaviour
     private void CollectCube(int i, int j)
     {
         Vector3 position = new Vector3(i * 2, 0, j * 2); // Example position for the cube
-        Instantiate(cubePrefab, position, Quaternion.identity);
+        CubeObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
+        cube.cubeMeshRenderer.material.color = cubeColors[Random.Range(0, cubeColors.Length)];
     }
 }
