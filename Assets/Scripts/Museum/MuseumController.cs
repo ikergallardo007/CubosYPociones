@@ -9,13 +9,14 @@ public class MuseumController : MonoBehaviour
 
     // Private Properties
     private InputAction collectAction;
+    private int i = 0;
+    private int j = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         // Get the collect action from the Input System
         collectAction = InputSystem.actions.FindAction("Collect");
-        StartCoroutine(CollectCube());
     }
 
     // Update is called once per frame
@@ -26,23 +27,23 @@ public class MuseumController : MonoBehaviour
         if (collectPress)
         {
             print("Collect Button Pressed");
-
+            CollectCube(i, j);
+            j++;
+            if (j == 16)
+            {
+                j = 0;
+                i++;
+                if (i == 11)
+                {
+                    i = 0;
+                }
+            }
         }
     }
 
-    IEnumerator CollectCube()
+    private void CollectCube(int i, int j)
     {
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 15; j++)
-            {
-                while (!collectAction.WasPressedThisFrame())
-                {
-                    yield return null; // Wait until the collect button is pressed
-                }
-                Vector3 position = new Vector3(i * 2, 0, j * 2); // Example position for the cube
-                Instantiate(cubePrefab, position, Quaternion.identity);
-            }
-        }
+        Vector3 position = new Vector3(i * 2, 0, j * 2); // Example position for the cube
+        Instantiate(cubePrefab, position, Quaternion.identity);
     }
 }

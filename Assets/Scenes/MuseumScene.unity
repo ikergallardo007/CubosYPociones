@@ -2546,7 +2546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6a774eefb238f4fb857f5e0ae561d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MuseumController
-  cubePrefab: {fileID: 7324605243215406324, guid: 09961195274cd644da43ef4ec410c592, type: 3}
+  cubePrefab: {fileID: 4095718477852288199, guid: b1f9b3ab76386774685c4cd4dfdf382c, type: 3}
 --- !u!4 &1326896170
 Transform:
   m_ObjectHideFlags: 0
