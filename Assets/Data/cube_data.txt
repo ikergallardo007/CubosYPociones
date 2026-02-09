@@ -1,0 +1,4 @@
+Name: Cube_1, Position: (0.00, 0.00, 0.00), Color: RGBA(0.627, 0.125, 0.941, 1.000)
+Name: Cube_2, Position: (0.00, 0.00, 2.00), Color: RGBA(0.500, 0.500, 0.500, 1.000)
+Name: Cube_3, Position: (0.00, 0.00, 4.00), Color: RGBA(1.000, 0.647, 0.000, 1.000)
+Name: Cube_4, Position: (0.00, 0.00, 6.00), Color: RGBA(0.627, 0.125, 0.941, 1.000)

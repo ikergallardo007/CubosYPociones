@@ -6,7 +6,7 @@ using System.IO;
 
 public class MuseumController : MonoBehaviour
 {
-    // Struct
+    // Struct with the necessary information to save about each cube, including its name, position, and color. This struct will be used to create a list of cubes that can be saved to a file.
     [System.Serializable]
     public struct CubeData
     {
@@ -14,22 +14,41 @@ public class MuseumController : MonoBehaviour
         public Vector3 position; // Position of the cube in the scene
         public Color color; // Color of the cube
 
+        // Constructor to initialize the CubeData struct 
         public CubeData(string name, Vector3 position, Color color)
         {
             this.name = name;
             this.position = position;
             this.color = color;
         }
+    }
+
+    // Struct to hold a list of CubeData objects, which can be saved to a file. This struct will allow us to easily manage and save the information of multiple cubes at once.
+    [System.Serializable]
+    public struct CubeList 
+    {
+        public List<CubeData> cubes; // List of CubeData objects
+
+        public CubeList(List<CubeData> cubes)
+        {
+            this.cubes = cubes;
+        }
 
         public void Save(string filePath)
         {
-            string jsonData = JsonUtility.ToJson(this); // Convert the CubeData object to JSON format
-            File.WriteAllText(filePath, jsonData); // Write the JSON data to a file
+            File.WriteAllText(filePath, string.Empty); // Clear the file before writing new data
+            foreach (CubeData cube in cubes)
+            {
+                string cubeInfo = $"Name: {cube.name}, Position: {cube.position}, Color: {cube.color}";
+                File.AppendAllText(filePath, cubeInfo + "\n");
+            }
         }
     }
 
     // Public Attributes
     public CubeObject cubePrefab; // Reference to the cube prefab to be instantiated
+    public CubeData cubeData; // Instance of CubeData to hold the information of a single cube
+    public CubeList cubeList; // Instance of CubeList to hold a list of CubeData objects for saving multiple cubes
 
     // Private Properties
     private InputAction collectAction; // Input action for collecting cubes
@@ -88,21 +107,13 @@ public class MuseumController : MonoBehaviour
         cube.cubeMeshRenderer.material.color = cubeColors[Random.Range(0, cubeColors.Length)]; // Assign a random color to the cube from the predefined array
         cube.name = "Cube_" + counter; // Name the cube with a unique identifier
         collectedCubes.Add(cube); // Add the collected cube to the list
+        cubeData = new CubeData(cube.name, cube.transform.position, cube.cubeMeshRenderer.material.color); // Create a CubeData instance with the cube's information
+        cubeList.cubes.Add(cubeData); // Add the CubeData instance to the CubeList
     }
 
     private void OnDestroy()
     {
-        // Clean up the collected cubes when the MuseumController is destroyed
-        foreach (CubeObject cube in collectedCubes)
-        {
-            print("Destroying cube: " + cube.name); // Log the name of the cube being destroyed for debugging purposes
-            if (cube != null)
-            {
-                CubeData cubeData = new CubeData(cube.name, cube.transform.position, cube.cubeMeshRenderer.material.color); // Create a CubeData object with the cube's name, position, and color
-                string filePath = Application.dataPath + "/Data/" + cube.name + ".json"; // Define the file path for saving the cube data
-                print("Saving cube data to: " + filePath); // Log the file path for debugging purposes
-                cubeData.Save(filePath); // Save the cube data to a JSON file
-            }
-        }
+        cubeList.Save(Application.dataPath + "/Data/cube_data.txt"); // Save the cube data to a file when the MuseumController is destroyed
     }
+
 }
