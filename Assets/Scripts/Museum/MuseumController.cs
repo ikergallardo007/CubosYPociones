@@ -129,7 +129,7 @@ public class MuseumController : MonoBehaviour
             cube.name = cubeData.name; // Name the cube with the name from the loaded data
         }
         indexData.Load(Application.dataPath + "/Data/index_data.txt"); // Load the index data from a file when the MuseumController is created
-
+        print("Data loaded successfully. You have " + indexData.counter + " cubes stored."); // Print a message to the console indicating that the data has been loaded and how many cubes are stored)
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -179,6 +179,7 @@ public class MuseumController : MonoBehaviour
         IndexData indexData = new IndexData(i, j, counter); // Create an IndexData instance with the current index and counter values
         indexData.Save(Application.dataPath + "/Data/index_data.txt"); // Save the index data to a file when the MuseumController is destroyed
         cubeList.Save(Application.dataPath + "/Data/cube_data.txt"); // Save the cube data to a file when the MuseumController is destroyed
+        print("Data saved successfully. You stored " + counter + " cubes."); // Print a message to the console indicating that the data has been saved
     }
 
 }
