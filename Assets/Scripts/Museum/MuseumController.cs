@@ -2,9 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.IO;
 
 public class MuseumController : MonoBehaviour
 {
+    // Struct
+    [System.Serializable]
+    public struct CubeData
+    {
+        public string name; // Name of the cube
+        public Vector3 position; // Position of the cube in the scene
+        public Color color; // Color of the cube
+
+        public CubeData(string name, Vector3 position, Color color)
+        {
+            this.name = name;
+            this.position = position;
+            this.color = color;
+        }
+
+        public void Save(string filePath)
+        {
+            string jsonData = JsonUtility.ToJson(this); // Convert the CubeData object to JSON format
+            File.WriteAllText(filePath, jsonData); // Write the JSON data to a file
+        }
+    }
+
     // Public Attributes
     public CubeObject cubePrefab; // Reference to the cube prefab to be instantiated
 
@@ -65,5 +88,21 @@ public class MuseumController : MonoBehaviour
         cube.cubeMeshRenderer.material.color = cubeColors[Random.Range(0, cubeColors.Length)]; // Assign a random color to the cube from the predefined array
         cube.name = "Cube_" + counter; // Name the cube with a unique identifier
         collectedCubes.Add(cube); // Add the collected cube to the list
+    }
+
+    private void OnDestroy()
+    {
+        // Clean up the collected cubes when the MuseumController is destroyed
+        foreach (CubeObject cube in collectedCubes)
+        {
+            print("Destroying cube: " + cube.name); // Log the name of the cube being destroyed for debugging purposes
+            if (cube != null)
+            {
+                CubeData cubeData = new CubeData(cube.name, cube.transform.position, cube.cubeMeshRenderer.material.color); // Create a CubeData object with the cube's name, position, and color
+                string filePath = Application.dataPath + "/Data/" + cube.name + ".json"; // Define the file path for saving the cube data
+                print("Saving cube data to: " + filePath); // Log the file path for debugging purposes
+                cubeData.Save(filePath); // Save the cube data to a JSON file
+            }
+        }
     }
 }
